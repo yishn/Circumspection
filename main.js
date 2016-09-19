@@ -7,7 +7,7 @@ app.on('window-all-closed', () => app.quit())
 app.on('ready', () => {
     window = new BrowserWindow({
         width: 800,
-        height: 512,
+        height: 500,
         useContentSize: true,
         // fullscreen: true,
         show: false
