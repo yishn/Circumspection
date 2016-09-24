@@ -21,5 +21,5 @@ app.on('ready', () => {
     .on('did-finish-load', () => window.show())
     .on('new-window', evt => evt.preventDefault())
 
-    window.loadURL(`file://${__dirname}/view/index.html`)
+    window.loadURL(`file://${__dirname}/browser/index.html`)
 })
