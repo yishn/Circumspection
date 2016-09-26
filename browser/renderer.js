@@ -6,28 +6,33 @@ exports.render = function(level) {
     let s = Snap('#scene')
     s.clear()
 
-    // Draw background
+    exports.renderBackground(s, level)
+    exports.renderBlocks(s, level)
+    exports.renderPlayer(s, level)
+    exports.renderEnemies(s, level)
+}
 
+exports.renderBackground = function(s, level) {
     s.rect(0, 0, 800, 500).attr({
         fill: '#101918'
     })
+}
 
-    // Draw blocks
-
+exports.renderBlocks = function(s, level) {
     level.blocks.forEach(block => {
         s.rect(...block.position, ...block.size).attr({
             fill: 'black'
         })
     })
+}
 
-    // Draw player
-
+exports.renderPlayer = function(s, level) {
     s.circle(...level.player.position, 12).attr({
         fill: 'black'
     })
+}
 
-    // Draw enemies
-
+exports.renderEnemies = function(s, level) {
     level.enemies.forEach(enemy => {
         let {position, direction, sightDistance, sightAngle} = enemy
 
