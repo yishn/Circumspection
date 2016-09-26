@@ -28,7 +28,7 @@ exports.renderBlocks = function(s, level) {
 
 exports.renderPlayer = function(s, level) {
     s.circle(...level.player.position, 12).attr({
-        fill: 'black'
+        fill: level.player.inLight(level) ? '#466385' : 'black'
     })
 }
 

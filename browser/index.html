@@ -19,15 +19,15 @@ const {render} = require('./renderer')
 let level = new Level({
     width: 800,
     height: 500,
-    player: new Player({position: [600, 400]}),
+    player: new Player({position: [326, 150]}),
     blocks: [
         new Block({position: [100, 100], size: [200, 50]}),
         new Block({position: [500, 120], size: [200, 50]}),
-        new Block({position: [100, 320], size: [200, 50]}),
+        new Block({position: [130, 320], size: [200, 50]}),
         new Block({position: [500, 300], size: [200, 50]})
     ],
     enemies: [
-        new Enemy({position: [340, 100], direction: (-1 / 2 - 1 / 8) * 360}),
+        new Enemy({position: [340, 100], direction: (-1 / 2 - 1 / 8) * 360, alerted: true}),
         new Enemy({position: [550, 210], direction: -(1 / 4 + 1 / 32) * 360})
     ]
 })
