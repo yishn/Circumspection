@@ -11,5 +11,17 @@
 
 <svg id="scene" width="800" height="500"></svg>
 
+<script>
+const Level = require('../structure/level')
+const {render} = require('./renderer')
+
+let level = new Level({
+    width: 800,
+    height: 500
+})
+
+render(level)
+</script>
+
 </body>
 </html>
