@@ -36,9 +36,7 @@ exports.renderEnemies = function(s, level) {
     level.enemies.forEach(enemy => {
         let {position, direction, sightDistance, sightAngle} = enemy
 
-        // Draw light
-
-        let n = 100
+        let n = 20
         let anglePoints = helper.range(0, n).map(i => direction - sightAngle / 2 + i * sightAngle / n)
 
         let testPointsDistances = anglePoints.map(angle => {
@@ -57,25 +55,27 @@ exports.renderEnemies = function(s, level) {
             .reduce((min, next) => next[1] >= min[1] ? min : next)
         })
 
-        let illuminated = testPointsDistances.filter(p => p[1] < Math.pow(sightDistance, 2) - 5)
+        let illuminatedPoints = testPointsDistances.filter(p => p[1] < Math.pow(sightDistance, 2) - 5)
+        let lightPoints = [[position, 0], ...testPointsDistances, [position, 0]]
 
-        s.path('M' + illuminated.map(p => p[0].join(',')).join('L')).attr({
+        let illumination = s.path('M' + illuminatedPoints.map(p => p[0].join(',')).join('L')).attr({
             stroke: '#938F8E',
-            strokeWidth: 1
+            strokeWidth: 1,
+            fill: 'transparent'
         })
 
-        s.path('M' + position.join(',') + 'L' + testPointsDistances.map(p => p[0].join(',')).join('L') + 'L' + position.join(',')).attr({
+        let light = s.path('M' + lightPoints.map(p => p[0].join(',')).join('L')).attr({
             fill: 'rgba(255, 255, 255, 0.2)'
         })
 
-        // Draw body
-
-        s.rect(...position.map(x => x - 12), 24, 24).attr({
+        let body = s.rect(...position.map(x => x - 12), 24, 24).attr({
             fill: 'black',
             stroke: '#938F8E',
             strokeWidth: 2,
             strokeDasharray: '0,24,24,48',
             transform: `rotate(${direction} ${position.join(' ')})`
         })
+
+        s.group(illumination, light, body)
     })
 }
