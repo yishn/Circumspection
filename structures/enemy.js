@@ -1,5 +1,5 @@
 class Enemy {
-    constructor({position, direction, alerted = false, disabled = false, sightDistance = 100, sightAngle = 90}) {
+    constructor({position, direction, alerted = false, disabled = false, sightDistance = 150, sightAngle = 60}) {
         this.position = position
         this.direction = direction
         this.alerted = alerted
