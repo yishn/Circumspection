@@ -41,7 +41,7 @@ exports.renderEnemies = function(s, level) {
         let n = 100
         let anglePoints = helper.range(0, n).map(i => direction - sightAngle / 2 + i * sightAngle / n)
 
-        let testPoints = anglePoints.map(angle => {
+        let testPointsDistances = anglePoints.map(angle => {
             let candidates = [
                 [Math.cos, Math.sin]
                 .map(f => f(angle * 2 * Math.PI / 360))
@@ -53,11 +53,18 @@ exports.renderEnemies = function(s, level) {
             })
 
             return candidates
-            .map(x => [x, helper.euclidean(x, position)])
-            .reduce((min, next) => next[1] >= min[1] ? min : next)[0]
+            .map(x => [x.map(y => Math.round(y)), Math.round(helper.squaredEuclidean(x, position))])
+            .reduce((min, next) => next[1] >= min[1] ? min : next)
         })
 
-        s.path('M' + position.join(',') + 'L' + testPoints.map(p => p.join(',')).join('L') + 'L' + position.join(',')).attr({
+        let illuminated = testPointsDistances.filter(p => p[1] < Math.pow(sightDistance, 2) - 5)
+
+        s.path('M' + illuminated.map(p => p[0].join(',')).join('L')).attr({
+            stroke: '#938F8E',
+            strokeWidth: 1
+        })
+
+        s.path('M' + position.join(',') + 'L' + testPointsDistances.map(p => p[0].join(',')).join('L') + 'L' + position.join(',')).attr({
             fill: 'rgba(255, 255, 255, 0.2)'
         })
 
