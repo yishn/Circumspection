@@ -75,7 +75,7 @@ exports.renderEnemies = function(s, level) {
         let [light, illumination] = exports.renderLight(s, position, anglePoints, sightDistance)
 
         let body = s.rect(...position.map(x => x - 12), 24, 24).attr({
-            fill: 'black',
+            fill: enemy.alerted ? '#8C2722' : 'black',
             stroke: '#938F8E',
             strokeWidth: 2,
             strokeDasharray: '0,24,24,48',
