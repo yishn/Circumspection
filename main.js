@@ -9,6 +9,7 @@ app.on('ready', () => {
         width: 800,
         height: 500,
         useContentSize: true,
+        backgroundColor: '#000',
         // fullscreen: true,
         show: false
     })
