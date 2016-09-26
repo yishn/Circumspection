@@ -24,7 +24,7 @@ exports.pointInBlock = function(point, {position, size}) {
     return point.every((x, i) => exports.valueInInterval(x, position[i], position[i] + size[i]))
 }
 
-exports.calculateIntersections = function(point, direction, {position, size}, maxDistance = Infinity) {
+exports.getRayBlockIntersections = function(point, direction, {position, size}, maxDistance = Infinity) {
     let lists = [0, 1].map(i => [position[i], position[i] + size[i]])
     let directionVector = [Math.cos, Math.sin].map(f => f(direction * 2 * Math.PI / 360))
     let intersections = []

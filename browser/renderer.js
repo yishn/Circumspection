@@ -47,7 +47,7 @@ exports.renderEnemies = function(s, level) {
             ]
 
             level.blocks.forEach(block => {
-                candidates.push(...helper.calculateIntersections(position, angle, block, sightDistance))
+                candidates.push(...helper.getRayBlockIntersections(position, angle, block, sightDistance))
             })
 
             return candidates
