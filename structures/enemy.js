@@ -1,9 +1,11 @@
 class Enemy {
-    constructor({position, direction, alerted = false, disabled = false}) {
+    constructor({position, direction, alerted = false, disabled = false, sightDistance = 100, sightAngle = 90}) {
         this.position = position
         this.direction = direction
         this.alerted = alerted
         this.disabled = disabled
+        this.sightDistance = sightDistance
+        this.sightAngle = sightAngle
     }
 }
 
