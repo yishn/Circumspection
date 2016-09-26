@@ -12,12 +12,19 @@
 <svg id="scene" width="800" height="500"></svg>
 
 <script>
-const {Level} = require('../structures')
+const {Block, Enemy, Level, Player} = require('../structures')
 const {render} = require('./renderer')
 
 let level = new Level({
     width: 800,
-    height: 500
+    height: 500,
+    player: new Player({position: [600, 400]}),
+    blocks: [
+        new Block({position: [100, 100], size: [200, 50]}),
+        new Block({position: [500, 120], size: [200, 50]}),
+        new Block({position: [100, 320], size: [200, 50]}),
+        new Block({position: [500, 300], size: [200, 50]})
+    ]
 })
 
 render(level)
