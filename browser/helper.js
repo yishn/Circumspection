@@ -8,6 +8,15 @@ exports.range = function(min, max, step = 1) {
     return result
 }
 
+exports.normalize = function(p) {
+    let norm = exports.euclidean([0, 0], p)
+    return p.map(z => z / norm)
+}
+
+exports.normalizeAngle = function(angle) {
+    return (angle % 360 + 360) % 360
+}
+
 exports.squaredEuclidean = function([x1, y1], [x2, y2]) {
     return Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)
 }
