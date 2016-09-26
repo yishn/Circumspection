@@ -32,6 +32,39 @@ exports.renderPlayer = function(s, level) {
     })
 }
 
+exports.renderLight = function(s, position, anglePoints, distance) {
+    let testPointsDistances = anglePoints.map(angle => {
+        let candidates = [
+            [Math.cos, Math.sin]
+            .map(f => f(angle * 2 * Math.PI / 360))
+            .map((x, i) => x * distance + position[i])
+        ]
+
+        level.blocks.forEach(block => {
+            candidates.push(...helper.getRayBlockIntersections(position, angle, block, distance))
+        })
+
+        return candidates
+        .map(x => [x.map(y => Math.round(y)), Math.round(helper.squaredEuclidean(x, position))])
+        .reduce((min, next) => next[1] >= min[1] ? min : next)
+    })
+
+    let illuminatedPoints = testPointsDistances.filter(p => p[1] < Math.pow(distance, 2) - 5)
+    let lightPoints = [[position, 0], ...testPointsDistances, [position, 0]]
+
+    let illumination = s.path('M' + illuminatedPoints.map(p => p[0].join(',')).join('L')).attr({
+        stroke: '#938F8E',
+        strokeWidth: 1,
+        fill: 'transparent'
+    })
+
+    let light = s.path('M' + lightPoints.map(p => p[0].join(',')).join('L')).attr({
+        fill: 'rgba(255, 255, 255, 0.2)'
+    })
+
+    return [light, illumination]
+}
+
 exports.renderEnemies = function(s, level) {
     level.enemies.forEach(enemy => {
         let {position, direction, sightDistance, sightAngle} = enemy
@@ -39,34 +72,7 @@ exports.renderEnemies = function(s, level) {
         let n = 20
         let anglePoints = helper.range(0, n).map(i => direction - sightAngle / 2 + i * sightAngle / n)
 
-        let testPointsDistances = anglePoints.map(angle => {
-            let candidates = [
-                [Math.cos, Math.sin]
-                .map(f => f(angle * 2 * Math.PI / 360))
-                .map((x, i) => x * sightDistance + position[i])
-            ]
-
-            level.blocks.forEach(block => {
-                candidates.push(...helper.getRayBlockIntersections(position, angle, block, sightDistance))
-            })
-
-            return candidates
-            .map(x => [x.map(y => Math.round(y)), Math.round(helper.squaredEuclidean(x, position))])
-            .reduce((min, next) => next[1] >= min[1] ? min : next)
-        })
-
-        let illuminatedPoints = testPointsDistances.filter(p => p[1] < Math.pow(sightDistance, 2) - 5)
-        let lightPoints = [[position, 0], ...testPointsDistances, [position, 0]]
-
-        let illumination = s.path('M' + illuminatedPoints.map(p => p[0].join(',')).join('L')).attr({
-            stroke: '#938F8E',
-            strokeWidth: 1,
-            fill: 'transparent'
-        })
-
-        let light = s.path('M' + lightPoints.map(p => p[0].join(',')).join('L')).attr({
-            fill: 'rgba(255, 255, 255, 0.2)'
-        })
+        let [light, illumination] = exports.renderLight(s, position, anglePoints, sightDistance)
 
         let body = s.rect(...position.map(x => x - 12), 24, 24).attr({
             fill: 'black',
